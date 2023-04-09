@@ -118,10 +118,8 @@ endif
 ###############################################################################
 MODULE_NAME := wmt_drv
 ifeq ($(CONFIG_WLAN_DRV_BUILD_IN),y)
-$(warning $(MODULE_NAME) build-in boot.img)
 obj-y += $(MODULE_NAME).o
 else
-$(warning $(MODULE_NAME) is kernel module)
 obj-m += $(MODULE_NAME).o
 endif
 
@@ -189,11 +187,7 @@ ccflags-y += -DLOG_STP_DEBUG_DISABLE
 endif
 endif
 
-ifneq ($(TARGET_BUILD_VARIANT), user)
-    ccflags-y += -D WMT_DBG_SUPPORT=1
-else
-    ccflags-y += -D WMT_DBG_SUPPORT=0
-endif
+ccflags-y += -D WMT_DBG_SUPPORT=0
 
 ifeq ($(CONFIG_MTK_DEVAPC),y)
     ccflags-y += -D WMT_DEVAPC_DBG_SUPPORT=1
@@ -210,7 +204,6 @@ ccflags-y += -D CFG_WMT_EVB
 endif
 
 KERNEL_VERSION_SUPPORT_CHIPID_LIST := $(patsubst %Y,%,$(patsubst %N,,$(patsubst %Ny,%Y,$(foreach chipid,$(patsubst mt%.c,%,$(notdir $(wildcard $(KO_CODE_PATH)/common_main/platform/mt[0-9][0-9][0-9][0-9].c))),$(chipid)N$(CONFIG_MTK_COMBO_CHIP_CONSYS_$(chipid))))))
-$(warning KERNEL_VERSION_SUPPORT_CHIPID_LIST=[$(KERNEL_VERSION_SUPPORT_CHIPID_LIST)])
 
 ifeq ($(KERNEL_VERSION_SUPPORT_CHIPID_LIST),)
 ifneq ($(CONNSYS_PLATFORM),)
